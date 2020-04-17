@@ -8,7 +8,8 @@ import octoprint.util
 class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
                           octoprint.plugin.EventHandlerPlugin,
                           octoprint.plugin.SettingsPlugin,
-                          octoprint.plugin.TemplatePlugin):
+                          octoprint.plugin.TemplatePlugin,
+                          octoprint.printer.PrinterCallback):
 
 	INTERVAL = 2.0
 
@@ -23,6 +24,8 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 		self._interval = None
 
 	def initialize(self):
+		self._printer.register_callback(self)
+
 		self._interval = self._settings.get_float(["interval"])
 		self._timer = octoprint.util.RepeatedTimer(self.interval, self._worker)
 		self._timer.start()
@@ -76,6 +79,16 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 			dict(type="settings", custom_bindings=False)
 		]
 
+	##~~ PrinterCallback mixin
+
+	def on_printer_add_log(self, data):
+		if data.startswith("Send: "):
+			self._sent_lines += 1
+			self._sent_bytes += len(data) - 6
+		elif data.startswith("Recv: "):
+			self._received_lines += 1
+			self._received_bytes += len(data) - 6
+
 	##~~ Softwareupdate hook
 
 	def get_update_information(self):
@@ -94,19 +107,6 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 				pip="https://github.com/OctoPrint/OctoPrint-Terminalstats/archive/{target_version}.zip"
 			)
 		)
-
-	##~~ GCODE line sent hook
-
-	def line_sent_handler(self, comm_instance, phase, cmd, cmd_type, gcode, subcode=None, tags=None, *args, **kwargs):
-		self._sent_lines += 1
-		self._sent_bytes += len(cmd)
-
-	##~~ GCODE line received hook
-
-	def line_received_handler(self, comm_instance, line, *args, **kwargs):
-		self._received_lines += 1
-		self._received_bytes += len(line)
-		return line
 
 	##~~ helpers
 
@@ -137,8 +137,6 @@ def __plugin_load__():
 
 	global __plugin_hooks__
 	__plugin_hooks__ = {
-		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
-		"octoprint.comm.protocol.gcode.sent": __plugin_implementation__.line_sent_handler,
-		"octoprint.comm.protocol.gcode.received": __plugin_implementation__.line_received_handler
+		"octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
 	}
 
