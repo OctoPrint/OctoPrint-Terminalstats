@@ -5,6 +5,8 @@ import octoprint.plugin
 import octoprint.events
 import octoprint.util
 
+from collections import deque
+
 class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
                           octoprint.plugin.EventHandlerPlugin,
                           octoprint.plugin.SettingsPlugin,
@@ -12,12 +14,19 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
                           octoprint.printer.PrinterCallback):
 
 	INTERVAL = 2.0
+	MAX_HISTORY = 10
 
 	def __init__(self):
 		self._sent_lines = 0
 		self._sent_bytes = 0
 		self._received_lines = 0
 		self._received_bytes = 0
+
+		self._sent_history = deque([], self.MAX_HISTORY)
+		self._received_history = deque([], maxlen=self.MAX_HISTORY)
+
+		self._sent_max = 0.0
+		self._received_max = 0.0
 
 		self._timer = None
 
@@ -39,7 +48,7 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 
 	def get_assets(self):
 		return dict(
-			js=["js/terminalstats.js"],
+			js=["js/terminalstats.js", "js/jquery.sparkline.min.js"],
 			css=["css/terminalstats.css"]
 		)
 
@@ -48,6 +57,7 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 	def on_event(self, event, payload):
 		if event == octoprint.events.Events.CONNECTED:
 			self._sent_lines = self._sent_bytes = self._received_lines = self._received_bytes = 0
+			self._sent_max = self._received_max = 0.0
 
 	##~~ SettingsPlugin mixin
 
@@ -123,10 +133,19 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 		                                                                                   send_rate_bytes,
 		                                                                                   receive_rate_lines,
 		                                                                                   receive_rate_bytes))
+		self._sent_history.append(send_rate_bytes)
+		self._received_history.append(receive_rate_bytes)
+		self._sent_max = max(self._sent_max, send_rate_bytes)
+		self._received_max = max(self._received_max, receive_rate_bytes)
+
 		self._plugin_manager.send_plugin_message(self._identifier, dict(send_rate_lines=send_rate_lines,
 		                                                                send_rate_bytes=send_rate_bytes,
 		                                                                receive_rate_lines=receive_rate_lines,
-		                                                                receive_rate_bytes=receive_rate_bytes))
+		                                                                receive_rate_bytes=receive_rate_bytes,
+		                                                                send_rate_history=list(self._sent_history),
+		                                                                receive_rate_history=list(self._received_history),
+		                                                                send_rate_max=self._sent_max,
+		                                                                receive_rate_max=self._received_max))
 
 __plugin_name__ = "Terminalstats Plugin"
 __plugin_pythoncompat__ = ">=2.7,<4" # python 2 and 3

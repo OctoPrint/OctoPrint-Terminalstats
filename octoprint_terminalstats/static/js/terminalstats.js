@@ -18,6 +18,8 @@ $(function() {
             self.sendLinesElement = $('<span class="plugin-terminalstats-stat"></span>');
             self.receivedBytesElement = $('<span class="plugin-terminalstats-stat"></span>');
             self.sendBytesElement = $('<span class="plugin-terminalstats-stat"></span>');
+            self.receivedSparkElement = $('<span></span>');
+            self.sendSparkElement = $('<span></span>');
 
             var sendField = $('<span class="span6"></span>');
             sendField.append("Sent: ")
@@ -25,7 +27,8 @@ $(function() {
             sendField.append(" lines/s");
             sendField.append(" | ");
             sendField.append(self.sendBytesElement);
-            sendField.append(" B/s");
+            sendField.append(" B/s ");
+            sendField.append(self.sendSparkElement);
 
             var receivedField = $('<span class="span6" style="text-align: right"></span>');
             receivedField.append("Recv: ")
@@ -33,7 +36,8 @@ $(function() {
             receivedField.append(" lines/s");
             receivedField.append(" | ");
             receivedField.append(self.receivedBytesElement);
-            receivedField.append(" B/s");
+            receivedField.append(" B/s ");
+            receivedField.append(self.receivedSparkElement);
 
             var container = $('<div class="plugin-terminalstats-container row-fluid"></div>');
             container.append(sendField);
@@ -49,6 +53,10 @@ $(function() {
             self.receivedBytesElement.text(message.receive_rate_bytes);
             self.sendLinesElement.text(message.send_rate_lines);
             self.sendBytesElement.text(message.send_rate_bytes);
+
+            var options = {type: 'line', fillColor: undefined, chartRangeMin: 0, zeroAxis: false};
+            self.receivedSparkElement.sparkline(message.receive_rate_history, $.extend({chartRangeMax: message.receive_rate_max}, options));
+            self.sendSparkElement.sparkline(message.send_rate_history, $.extend({chartRangeMax: message.send_rate_max}, options));
         }
     }
 
