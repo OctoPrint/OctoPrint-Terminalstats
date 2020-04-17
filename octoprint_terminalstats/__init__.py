@@ -6,7 +6,9 @@ import octoprint.events
 import octoprint.util
 
 class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
-                          octoprint.plugin.EventHandlerPlugin):
+                          octoprint.plugin.EventHandlerPlugin,
+                          octoprint.plugin.SettingsPlugin,
+                          octoprint.plugin.TemplatePlugin):
 
 	INTERVAL = 2.0
 
@@ -18,9 +20,17 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 
 		self._timer = None
 
+		self._interval = None
+
 	def initialize(self):
-		self._timer = octoprint.util.RepeatedTimer(self.INTERVAL, self._worker)
+		self._interval = self._settings.get_float(["interval"])
+		self._timer = octoprint.util.RepeatedTimer(self.interval, self._worker)
 		self._timer.start()
+
+		self._logger.info("Terminal stats timer initialized with an interval of {}s".format(self._interval))
+
+	def interval(self):
+		return self._interval
 
 	##~~ AssetPlugin mixin
 
@@ -30,11 +40,41 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 			css=["css/terminalstats.css"]
 		)
 
-	##~~ EventHandlerPlugin hook
+	##~~ EventHandlerPlugin mixin
 
 	def on_event(self, event, payload):
 		if event == octoprint.events.Events.CONNECTED:
 			self._sent_lines = self._sent_bytes = self._received_lines = self._received_bytes = 0
+
+	##~~ SettingsPlugin mixin
+
+	def get_settings_defaults(self):
+		return dict(interval=self.INTERVAL)
+
+	def on_settings_save(self, data):
+		old_interval = self._settings.get_float(["interval"])
+
+		if "interval" in data:
+			try:
+				data["interval"] = float(data["interval"])
+				if data["interval"] < 1:
+					raise ValueError("interval must be >= 1")
+			except ValueError:
+				self._logger.debug("Invalid interval: {!r}".format(data["interval"]))
+				del data["interval"]
+
+		octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
+
+		new_interval = self._settings.get_float(["interval"])
+		if old_interval != new_interval:
+			self._interval = new_interval
+
+	##~~ TemplatePlugin mixin
+
+	def get_template_configs(self):
+		return [
+			dict(type="settings", custom_bindings=False)
+		]
 
 	##~~ Softwareupdate hook
 
@@ -71,10 +111,12 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 	##~~ helpers
 
 	def _worker(self):
-		send_rate_lines = self._sent_lines / self.INTERVAL
-		receive_rate_lines = self._received_lines / self.INTERVAL
-		send_rate_bytes = self._sent_bytes / self.INTERVAL
-		receive_rate_bytes = self._received_bytes / self.INTERVAL
+		interval = self._settings.get_float(["interval"])
+
+		send_rate_lines = self._sent_lines / interval
+		receive_rate_lines = self._received_lines / interval
+		send_rate_bytes = self._sent_bytes / interval
+		receive_rate_bytes = self._received_bytes / interval
 		self._sent_lines = self._sent_bytes = self._received_lines = self._received_bytes = 0
 
 		self._logger.info("Sent rate: {}l/s / {}B/s, received lines: {}l/s / {}B/s".format(send_rate_lines,

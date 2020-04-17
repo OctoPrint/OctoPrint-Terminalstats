@@ -1,0 +1,12 @@
+<h3>Terminalstats configuration</h3>
+<form class="form-horizontal">
+    <div class="control-group" title="{{ _('The interval between the throughput measurements')|edq }}">
+        <label class="control-label">{{ _('Sampling interval') }}</label>
+        <div class="controls">
+            <div class="input-append">
+                <input type="number" class="input-mini" min="1" data-bind="value: settings.plugins.terminalstats.interval">
+                <span class="add-on">s</span>
+            </div>
+        </div>
+    </div>
+</form>
