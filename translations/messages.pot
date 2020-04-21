@@ -1,0 +1,60 @@
+# Translations template for OctoPrint-Terminalstats.
+# Copyright (C) 2020 The OctoPrint Project
+# This file is distributed under the same license as the
+# OctoPrint-Terminalstats project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: OctoPrint-Terminalstats 0.1.0\n"
+"Report-Msgid-Bugs-To: i18n@octoprint.org\n"
+"POT-Creation-Date: 2020-04-21 18:57+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: octoprint_terminalstats/templates/terminalstats.jinja2:3
+msgid "Sent:"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats.jinja2:8
+msgid "Recv:"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:1
+msgid "Terminalstats configuration"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:3
+msgid "The interval between the throughput measurements"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:4
+msgid "Sampling interval"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:12
+msgid "The unit to use for display of the raw measurements"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:13
+msgid "Display unit"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:16
+msgid "B/s"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:19
+msgid "lines/s"
+msgstr ""
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:22
+msgid "no display of raw measurements"
+msgstr ""
+

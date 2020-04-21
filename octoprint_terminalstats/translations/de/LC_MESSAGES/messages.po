@@ -1,0 +1,61 @@
+# German translations for OctoPrint-Terminalstats.
+# Copyright (C) 2020 The OctoPrint Project
+# This file is distributed under the same license as the
+# OctoPrint-Terminalstats project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OctoPrint-Terminalstats 0.1.0\n"
+"Report-Msgid-Bugs-To: i18n@octoprint.org\n"
+"POT-Creation-Date: 2020-04-21 18:57+0200\n"
+"PO-Revision-Date: 2020-04-21 18:49+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: octoprint_terminalstats/templates/terminalstats.jinja2:3
+msgid "Sent:"
+msgstr "Sent:"
+
+#: octoprint_terminalstats/templates/terminalstats.jinja2:8
+msgid "Recv:"
+msgstr "Recv:"
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:1
+msgid "Terminalstats configuration"
+msgstr "Terminalstats Konfiguration"
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:3
+msgid "The interval between the throughput measurements"
+msgstr "Das Intervall zwischen den Durchsatzmessungen"
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:4
+msgid "Sampling interval"
+msgstr "Abtastrate"
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:12
+msgid "The unit to use for display of the raw measurements"
+msgstr "Die Einheit, die für die Anzeige der Rohdaten verwendet werden soll"
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:13
+msgid "Display unit"
+msgstr "Einheit"
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:16
+msgid "B/s"
+msgstr "B/s"
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:19
+msgid "lines/s"
+msgstr "Zeilen/s"
+
+#: octoprint_terminalstats/templates/terminalstats_settings.jinja2:22
+msgid "no display of raw measurements"
+msgstr "keine Anzeige von Rohdaten"
+
