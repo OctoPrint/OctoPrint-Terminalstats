@@ -1,0 +1,13 @@
+<div id='plugin_terminalstats_snippet_wrapper' data-bind='allowBindings: false'>
+    <div id='plugin_terminalstats_snippet' class='plugin-terminalstats-container row-fluid' data-bind='allowBindings: true'>
+        <div class="span1">Sent:</div>
+        <div class="span2 text-right" data-bind="visible: settings.settings.plugins.terminalstats.unit() == 'lines', attr: {title: '' + sendBytes() + 'B/s'}"><span class="plugin-terminalstats-stat" data-bind="text: sendLines"></span>L/s</div>
+        <div class="span2 text-right" data-bind="visible: settings.settings.plugins.terminalstats.unit() == 'bytes', attr: {title: '' + sendLines() + 'L/s'}"><span class="plugin-terminalstats-stat" data-bind="text: sendBytes"></span>B/s</div>
+        <div class="span1"><span id="plugin_terminalstats_snippet_spark_send"></span></div>
+
+        <div class="offset4 span1" data-bind="css: {offset4: settings.settings.plugins.terminalstats.unit() != 'neither', offset8: settings.settings.plugins.terminalstats.unit() == 'neither'}">Recv:</div>
+        <div class="span2 text-right" data-bind="visible: settings.settings.plugins.terminalstats.unit() == 'lines', attr: {title: '' + receivedBytes() + 'B/s'}"><span class="plugin-terminalstats-stat" data-bind="text: receivedLines"></span>L/s</div>
+        <div class="span2 text-right" data-bind="visible: settings.settings.plugins.terminalstats.unit() == 'bytes', attr: {title: '' + receivedLines() + 'L/s'}"><span class="plugin-terminalstats-stat" data-bind="text: receivedBytes"></span>B/s</div>
+        <div class="span1"><span id="plugin_terminalstats_snippet_spark_received"></span></div>
+    </div>
+</div>

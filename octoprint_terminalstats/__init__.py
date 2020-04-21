@@ -62,7 +62,8 @@ class TerminalstatsPlugin(octoprint.plugin.AssetPlugin,
 	##~~ SettingsPlugin mixin
 
 	def get_settings_defaults(self):
-		return dict(interval=self.INTERVAL)
+		return dict(interval=self.INTERVAL,
+		            unit="bytes")
 
 	def on_settings_save(self, data):
 		old_interval = self._settings.get_float(["interval"])

@@ -9,4 +9,18 @@
             </div>
         </div>
     </div>
+    <div class="control-group" title="{{ _('The unit to use for display of the raw measurements')|edq }}">
+        <label class="control-label">{{ _('Display unit')}}</label>
+        <div class="controls">
+            <label class="radio">
+                <input type="radio" name="pluginTerminalstatsUnitGroup" value="bytes" data-bind="checked: settings.plugins.terminalstats.unit"> {{ _('B/s') }}
+            </label>
+            <label class="radio">
+                <input type="radio" name="pluginTerminalstatsUnitGroup" value="lines" data-bind="checked: settings.plugins.terminalstats.unit"> {{ _('lines/s') }}
+            </label>
+            <label class="radio">
+                <input type="radio" name="pluginTerminalstatsUnitGroup" value="neither" data-bind="checked: settings.plugins.terminalstats.unit"> {{ _('no display of raw measurements') }}
+            </label>
+        </div>
+    </div>
 </form>
