@@ -14,9 +14,18 @@ $(function() {
         self.sendLines = ko.observable();
         self.receivedBytes = ko.observable();
         self.sendBytes = ko.observable();
+        self.receivedPeak = ko.observable();
+        self.sendPeak = ko.observable();
 
         self.receivedSparkElement = undefined;
         self.sendSparkElement = undefined;
+
+        self.receivedStats = ko.pureComputed(function() {
+            return '' + self.receivedLines() + 'L/s | ' + self.receivedBytes() + 'B/s | ' + self.receivedPeak() + 'B/s'
+        });
+        self.sendStats = ko.pureComputed(function() {
+            return '' + self.sendLines() + 'L/s | ' + self.sendBytes() + 'B/s | ' + self.sendPeak() + 'B/s'
+        });
 
         self.onStartup = function() {
             log.info("Oh Hai!");
@@ -32,8 +41,10 @@ $(function() {
 
             self.receivedLines(message.receive_rate_lines);
             self.receivedBytes(message.receive_rate_bytes);
+            self.receivedPeak(message.receive_rate_max);
             self.sendLines(message.send_rate_lines);
             self.sendBytes(message.send_rate_bytes);
+            self.sendPeak(message.send_rate_max);
 
             var options = {type: 'line', fillColor: undefined, chartRangeMin: 0, zeroAxis: false};
             self.receivedSparkElement.sparkline(message.receive_rate_history, $.extend({chartRangeMax: message.receive_rate_max}, options));
