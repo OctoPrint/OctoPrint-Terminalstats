@@ -28,7 +28,6 @@ $(function() {
         });
 
         self.onStartup = function() {
-            log.info("Oh Hai!");
             var wrapper = $("#plugin_terminalstats_snippet_wrapper");
             wrapper.insertBefore($('#terminal-sendpanel'));
 
